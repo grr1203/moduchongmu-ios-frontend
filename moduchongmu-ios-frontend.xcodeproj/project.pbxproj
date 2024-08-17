@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A5D61922C6F43B2000F2F3E /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D61912C6F43B2000F2F3E /* WebView.swift */; };
 		8AF720562C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF720552C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift */; };
 		8AF720582C6C4E940094DAA8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF720572C6C4E940094DAA8 /* ContentView.swift */; };
 		8AF7205A2C6C4E960094DAA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AF720592C6C4E960094DAA8 /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8A5D61912C6F43B2000F2F3E /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		8AF720522C6C4E940094DAA8 /* moduchongmu-ios-frontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "moduchongmu-ios-frontend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AF720552C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = moduchongmu_ios_frontendApp.swift; sourceTree = "<group>"; };
 		8AF720572C6C4E940094DAA8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				8AF720572C6C4E940094DAA8 /* ContentView.swift */,
 				8AF720592C6C4E960094DAA8 /* Assets.xcassets */,
 				8AF7205B2C6C4E960094DAA8 /* Preview Content */,
+				8A5D61912C6F43B2000F2F3E /* WebView.swift */,
 			);
 			path = "moduchongmu-ios-frontend";
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A5D61922C6F43B2000F2F3E /* WebView.swift in Sources */,
 				8AF720582C6C4E940094DAA8 /* ContentView.swift in Sources */,
 				8AF720562C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift in Sources */,
 			);
