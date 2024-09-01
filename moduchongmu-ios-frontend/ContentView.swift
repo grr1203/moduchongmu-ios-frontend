@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
-            MainWebView(url: URL(string: "https://moduchongmu.com")!)
+            MainWebView(url: URL(string: "https://moduchongmu.com/signin")!)
         }
         .padding()
     }

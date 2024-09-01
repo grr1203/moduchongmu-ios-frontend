@@ -1,0 +1,15 @@
+{
+  "originHash" : "149b34740d7f6924ffbde4d4a57e5d3a3d6d2f3bda0b9da5cdc9cd3ee38e6e11",
+  "pins" : [
+    {
+      "identity" : "naveridlogin-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/naver/naveridlogin-sdk-ios",
+      "state" : {
+        "branch" : "master",
+        "revision" : "d8d2128b8bcef8cd93068a058ea898d6dbb7d486"
+      }
+    }
+  ],
+  "version" : 3
+}

@@ -2,7 +2,7 @@ import SwiftUI
 import WebKit
 import UIKit
 import Combine
-
+import NaverThirdPartyLogin
 
 struct MainWebView: UIViewRepresentable {
     let url:URL
@@ -15,7 +15,6 @@ struct MainWebView: UIViewRepresentable {
         preferences.javaScriptCanOpenWindowsAutomatically = false
         configuration.preferences = preferences
         configuration.userContentController.add(self.makeCoordinator(), name: "moChong")
-        configuration.userContentController.add(self.makeCoordinator(), name: "callBack")
         webView.backgroundColor = UIColor(named: "bgFrameBack")
         webView.navigationDelegate = context.coordinator  // 웹보기의 탐색 동작을 관리하는 데 사용하는 개체
         webView.allowsBackForwardNavigationGestures = false  // 가로로 스와이프 동작이 페이지 탐색을 앞뒤로 트리거하는지 여부
@@ -31,26 +30,19 @@ struct MainWebView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {
     }
     
-//    func callJavaScriptFunction(_ webView: WKWebView, functionName: String, arguments: [String]) {
-//        let argumentsString = arguments.joined(separator: ",")
-//        let script = "\(functionName)(\(argumentsString));"
-//        webView.evaluateJavaScript(script) { (result, error) in
-//            if let error = error {
-//                print("JavaScript 호출 오류: \(error.localizedDescription)")
-//            } else {
-//                print("JavaScript 호출 결과: \(String(describing: result))")
-//            }
-//        }
-//    }
-    
     class Coordinator : NSObject, WKNavigationDelegate {
         var parent: MainWebView
         var webView: WKWebView?
         var foo: AnyCancellable? = nil
+        
         // 생성자
         init(_ uiWebView: MainWebView) {
             self.parent = uiWebView
             self.webView = parent.webView
+            super.init()
+            let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
+            naverLoginInstance?.delegate = self
+            
         }
         // 소멸자
         deinit {
@@ -91,35 +83,74 @@ struct MainWebView: UIViewRepresentable {
         }
     }
 }
+
+struct WebViewEvent: Codable {
+    let action: String
+    let type: String
+}
 extension MainWebView.Coordinator: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController,
                                didReceive message: WKScriptMessage) {
-        print(message.name)
         switch message.name {
         case "moChong":
             if let tmp = message.body as? [String:String] {
                 print(tmp)
-            } else if let tmp = message.body as? String {
-                print(tmp)
-                //                if let webView = self.webView {
-                //                    self.parent.callJavaScriptFunction(webView, functionName: "initContent", arguments: ["arg1", "arg2"])
-                //                }
-                //                webView.evaluateJavaScript("""
-                //                                           moChong.postMessage('productId');
-                //                                         """)
+            } else if let bodyString = message.body as? String {
+                print(bodyString)
+                var data:WebViewEvent? = nil
+                if let jsonData = bodyString.data(using: .utf8) {
+                    do{
+                        data = try JSONDecoder().decode(WebViewEvent.self, from: jsonData)
+                    }
+                    catch {
+                        print("JSON 디코딩 오류: \(error)")
+                    }
+                    guard let verifiedData = data else { return }
+                    
+                    // WebView Event Action에 따라 동작
+                    switch verifiedData.action {
+                    case "log":
+                        print("log", verifiedData)
+                    case "login":
+                        if(verifiedData.type == "naver") {
+                            // Naver Login UI Open
+                            NaverThirdPartyLoginConnection.getSharedInstance().delegate = self
+                            NaverThirdPartyLoginConnection.getSharedInstance().requestThirdPartyLogin()
+                        }
+                    default:
+                        print("data", verifiedData)
+                        let code = "window.initContent('hello')"
+                        webView?.evaluateJavaScript(code)}
+                }
                 
-                let code = "window.initContent('hello')"
-                webView?.evaluateJavaScript(code)
+                
             } else {
                 print("머 잘못함 수구바위")
             }
-            print("hi")
-        case "callBack":
-            print("정상")
         default:
             break
         }
     }
 }
 
+// Naver Login 사용자 로그인 후 Callback 처리
+extension MainWebView.Coordinator: NaverThirdPartyLoginConnectionDelegate {
+    // NaverThirdPartyLoginConnectionDelegate 메서드 구현
+    func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+        // 인증 코드로 액세스 토큰을 요청한 후 처리 (첫 id, paswword 입력 로그인)
+        print("Successfully received access token with auth code")
+    }
+    func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+        // 리프레시 토큰으로 액세스 토큰을 요청한 후 처리
+        print("Successfully refreshed access token")
+    }
+    func oauth20ConnectionDidFinishDeleteToken() {
+        // 토큰 삭제 완료 후 처리
+        print("Token deleted successfully")
+    }
+    func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
+        // 오류 처리
+        print("Failed with error: \(error.localizedDescription)")
+    }
+}
 

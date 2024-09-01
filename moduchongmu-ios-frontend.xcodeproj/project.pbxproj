@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A13E6BE2C806CF200AB6138 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13E6BD2C806CF200AB6138 /* AppDelegate.swift */; };
+		8A13E6C12C81980000AB6138 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13E6C02C81980000AB6138 /* SceneDelegate.swift */; };
+		8A13E6C42C82BB8A00AB6138 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13E6C32C82BB8A00AB6138 /* Login.swift */; };
+		8A13E6FE2C84A22100AB6138 /* NaverThirdPartyLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 8A13E6FD2C84A22100AB6138 /* NaverThirdPartyLogin */; };
 		8A5D61922C6F43B2000F2F3E /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D61912C6F43B2000F2F3E /* WebView.swift */; };
 		8AF720562C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF720552C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift */; };
 		8AF720582C6C4E940094DAA8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF720572C6C4E940094DAA8 /* ContentView.swift */; };
@@ -35,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8A13E6B62C80340500AB6138 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8A13E6BD2C806CF200AB6138 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8A13E6C02C81980000AB6138 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		8A13E6C32C82BB8A00AB6138 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		8A5D61912C6F43B2000F2F3E /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		8A5D61942C778263000F2F3E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8AF720522C6C4E940094DAA8 /* moduchongmu-ios-frontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "moduchongmu-ios-frontend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A13E6FE2C84A22100AB6138 /* NaverThirdPartyLogin in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +83,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A13E6BA2C80653C00AB6138 /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				8A13E6BD2C806CF200AB6138 /* AppDelegate.swift */,
+				8A13E6C02C81980000AB6138 /* SceneDelegate.swift */,
+			);
+			path = Launch;
+			sourceTree = "<group>";
+		};
+		8A13E6C22C82BB7900AB6138 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				8A13E6C32C82BB8A00AB6138 /* Login.swift */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
 		8A5D61932C778263000F2F3E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +132,9 @@
 		8AF720542C6C4E940094DAA8 /* moduchongmu-ios-frontend */ = {
 			isa = PBXGroup;
 			children = (
+				8A13E6C22C82BB7900AB6138 /* lib */,
+				8A13E6BA2C80653C00AB6138 /* Launch */,
+				8A13E6B62C80340500AB6138 /* Info.plist */,
 				8AF720552C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift */,
 				8AF720572C6C4E940094DAA8 /* ContentView.swift */,
 				8AF720592C6C4E960094DAA8 /* Assets.xcassets */,
@@ -156,6 +185,9 @@
 			dependencies = (
 			);
 			name = "moduchongmu-ios-frontend";
+			packageProductDependencies = (
+				8A13E6FD2C84A22100AB6138 /* NaverThirdPartyLogin */,
+			);
 			productName = "moduchongmu-ios-frontend";
 			productReference = 8AF720522C6C4E940094DAA8 /* moduchongmu-ios-frontend.app */;
 			productType = "com.apple.product-type.application";
@@ -228,6 +260,9 @@
 				Base,
 			);
 			mainGroup = 8AF720492C6C4E940094DAA8;
+			packageReferences = (
+				8A13E6FC2C84A21800AB6138 /* XCRemoteSwiftPackageReference "naveridlogin-sdk-ios" */,
+			);
 			productRefGroup = 8AF720532C6C4E940094DAA8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -270,7 +305,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A13E6C12C81980000AB6138 /* SceneDelegate.swift in Sources */,
+				8A13E6BE2C806CF200AB6138 /* AppDelegate.swift in Sources */,
 				8A5D61922C6F43B2000F2F3E /* WebView.swift in Sources */,
+				8A13E6C42C82BB8A00AB6138 /* Login.swift in Sources */,
 				8AF720582C6C4E940094DAA8 /* ContentView.swift in Sources */,
 				8AF720562C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift in Sources */,
 			);
@@ -438,7 +476,9 @@
 				DEVELOPMENT_ASSET_PATHS = "\"moduchongmu-ios-frontend/Preview Content\"";
 				DEVELOPMENT_TEAM = 2F9B73Y3J6;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "moduchongmu-ios-frontend/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -470,7 +510,9 @@
 				DEVELOPMENT_ASSET_PATHS = "\"moduchongmu-ios-frontend/Preview Content\"";
 				DEVELOPMENT_TEAM = 2F9B73Y3J6;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "moduchongmu-ios-frontend/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -608,6 +650,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8A13E6FC2C84A21800AB6138 /* XCRemoteSwiftPackageReference "naveridlogin-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/naver/naveridlogin-sdk-ios";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8A13E6FD2C84A22100AB6138 /* NaverThirdPartyLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A13E6FC2C84A21800AB6138 /* XCRemoteSwiftPackageReference "naveridlogin-sdk-ios" */;
+			productName = NaverThirdPartyLogin;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8AF7204A2C6C4E940094DAA8 /* Project object */;
 }
