@@ -11,6 +11,7 @@ import NaverThirdPartyLogin
 import SwiftUI
 import KakaoSDKAuth
 import KakaoSDKCommon
+import GoogleSignIn
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
@@ -40,6 +41,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if (AuthApi.isKakaoTalkLoginUrl(url)) {
             return AuthController.handleOpenUrl(url: url)
+        }
+        
+        let handled: Bool = GIDSignIn.sharedInstance.handle(url)
+        if handled {
+            return true
         }
         
         return true

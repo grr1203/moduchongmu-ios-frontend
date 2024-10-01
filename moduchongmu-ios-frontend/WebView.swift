@@ -7,6 +7,7 @@ import NaverThirdPartyLogin
 import KakaoSDKCommon
 import KakaoSDKAuth
 import KakaoSDKUser
+import GoogleSignIn
 
 struct MainWebView: UIViewRepresentable {
     let url:URL
@@ -121,7 +122,8 @@ extension MainWebView.Coordinator: WKScriptMessageHandler {
                             // Naver Login UI Open
                             NaverThirdPartyLoginConnection.getSharedInstance().delegate = self
                             NaverThirdPartyLoginConnection.getSharedInstance().requestThirdPartyLogin()
-                        } else if(verifiedData.type == "kakao") {
+                        }
+                        else if(verifiedData.type == "kakao") {
                             if (UserApi.isKakaoTalkLoginAvailable()) {
                                 UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                                     if let error = error {
@@ -135,14 +137,29 @@ extension MainWebView.Coordinator: WKScriptMessageHandler {
                                 }
                             } else {
                                 UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                                        if let error = error {
-                                            print(error)
-                                        }
-                                        else {
-                                            print("loginWithKakaoAccount() success.")
-                                            responseToWebView(webView: self.webView, accessToken: oauthToken!.accessToken)
-                                        }
+                                    if let error = error {
+                                        print(error)
                                     }
+                                    else {
+                                        print("loginWithKakaoAccount() success.")
+                                        responseToWebView(webView: self.webView, accessToken: oauthToken!.accessToken)
+                                    }
+                                }
+                            }
+                        }
+                        else if (verifiedData.type == "google") {
+                            guard let viewController = UIApplication.getMostTopViewController() else { return }
+                            let config = GIDConfiguration(clientID: "780202279961-h4n1arr48o1mihs6dtuv67ag0oobh0p2.apps.googleusercontent.com")
+                            GIDSignIn.sharedInstance.configuration = config
+                            GIDSignIn.sharedInstance.signIn(withPresenting: viewController) { signInResult, error in
+                                guard error == nil else { return }
+                                print("google login success")
+                                guard let result = signInResult else {
+                                    print("No sign-in result available")
+                                    return
+                                }
+                                guard let idToken = result.user.idToken!.tokenString as? String else { return }
+                                responseToWebView(webView: self.webView, accessToken: idToken)
                             }
                         }
                     default:
