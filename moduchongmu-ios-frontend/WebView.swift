@@ -2,8 +2,11 @@ import SwiftUI
 import WebKit
 import UIKit
 import Combine
+// login
 import NaverThirdPartyLogin
-
+import KakaoSDKCommon
+import KakaoSDKAuth
+import KakaoSDKUser
 
 struct MainWebView: UIViewRepresentable {
     let url:URL
@@ -118,6 +121,29 @@ extension MainWebView.Coordinator: WKScriptMessageHandler {
                             // Naver Login UI Open
                             NaverThirdPartyLoginConnection.getSharedInstance().delegate = self
                             NaverThirdPartyLoginConnection.getSharedInstance().requestThirdPartyLogin()
+                        } else if(verifiedData.type == "kakao") {
+                            if (UserApi.isKakaoTalkLoginAvailable()) {
+                                UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+                                    if let error = error {
+                                        print(error)
+                                    }
+                                    else {
+                                        print("loginWithKakaoTalk() success.")
+                                        _ = oauthToken
+                                        responseToWebView(webView: self.webView, accessToken: oauthToken!.accessToken)
+                                    }
+                                }
+                            } else {
+                                UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+                                        if let error = error {
+                                            print(error)
+                                        }
+                                        else {
+                                            print("loginWithKakaoAccount() success.")
+                                            responseToWebView(webView: self.webView, accessToken: oauthToken!.accessToken)
+                                        }
+                                    }
+                            }
                         }
                     default:
                         print("data", verifiedData)
@@ -166,3 +192,9 @@ extension MainWebView.Coordinator: NaverThirdPartyLoginConnectionDelegate {
     }
 }
 
+func responseToWebView(webView: WKWebView?,accessToken: String) {
+    print("Successfully received access token with auth code",accessToken)
+    let jsonData = try? JSONSerialization.data(withJSONObject: ["accessToken", accessToken], options: [])
+    // webview로 전달
+    webView?.evaluateJavaScript("window.initContent('\(String(data: jsonData!, encoding: .utf8))')")
+}

@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 import NaverThirdPartyLogin
 import SwiftUI
+import KakaoSDKAuth
+import KakaoSDKCommon
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
@@ -28,11 +30,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         instance?.consumerSecret = "3FOgn_W_Ub"
         instance?.appName = "모두의 총무"
         
+        KakaoSDK.initSDK(appKey: "7c9b448a9bc8052b35b50d160955c257")
+        
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
+        
+        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+            return AuthController.handleOpenUrl(url: url)
+        }
+        
         return true
     }
 }
