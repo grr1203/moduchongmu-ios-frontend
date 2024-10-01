@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8A13E6BE2C806CF200AB6138 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13E6BD2C806CF200AB6138 /* AppDelegate.swift */; };
 		8A13E6C12C81980000AB6138 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13E6C02C81980000AB6138 /* SceneDelegate.swift */; };
-		8A13E6C42C82BB8A00AB6138 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13E6C32C82BB8A00AB6138 /* Login.swift */; };
 		8A13E6FE2C84A22100AB6138 /* NaverThirdPartyLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 8A13E6FD2C84A22100AB6138 /* NaverThirdPartyLogin */; };
 		8A5D61922C6F43B2000F2F3E /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D61912C6F43B2000F2F3E /* WebView.swift */; };
 		8AF720562C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF720552C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift */; };
@@ -42,7 +41,6 @@
 		8A13E6B62C80340500AB6138 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8A13E6BD2C806CF200AB6138 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A13E6C02C81980000AB6138 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8A13E6C32C82BB8A00AB6138 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		8A5D61912C6F43B2000F2F3E /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		8A5D61942C778263000F2F3E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8AF720522C6C4E940094DAA8 /* moduchongmu-ios-frontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "moduchongmu-ios-frontend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,7 +93,6 @@
 		8A13E6C22C82BB7900AB6138 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				8A13E6C32C82BB8A00AB6138 /* Login.swift */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -308,7 +305,6 @@
 				8A13E6C12C81980000AB6138 /* SceneDelegate.swift in Sources */,
 				8A13E6BE2C806CF200AB6138 /* AppDelegate.swift in Sources */,
 				8A5D61922C6F43B2000F2F3E /* WebView.swift in Sources */,
-				8A13E6C42C82BB8A00AB6138 /* Login.swift in Sources */,
 				8AF720582C6C4E940094DAA8 /* ContentView.swift in Sources */,
 				8AF720562C6C4E940094DAA8 /* moduchongmu_ios_frontendApp.swift in Sources */,
 			);

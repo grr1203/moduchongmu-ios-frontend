@@ -4,6 +4,7 @@ import UIKit
 import Combine
 import NaverThirdPartyLogin
 
+
 struct MainWebView: UIViewRepresentable {
     let url:URL
     let webView = WKWebView()
@@ -19,6 +20,7 @@ struct MainWebView: UIViewRepresentable {
         webView.navigationDelegate = context.coordinator  // 웹보기의 탐색 동작을 관리하는 데 사용하는 개체
         webView.allowsBackForwardNavigationGestures = false  // 가로로 스와이프 동작이 페이지 탐색을 앞뒤로 트리거하는지 여부
         webView.scrollView.isScrollEnabled = false  // 웹보기와 관련된 스크롤보기에서 스크롤 가능 여부
+        webView.isInspectable = true
         
         webView.load(URLRequest(url: url))  // 지정된 URL 요청 개체에서 참조하는 웹 콘텐츠를로드하고 탐색
         
@@ -122,8 +124,6 @@ extension MainWebView.Coordinator: WKScriptMessageHandler {
                         let code = "window.initContent('hello')"
                         webView?.evaluateJavaScript(code)}
                 }
-                
-                
             } else {
                 print("머 잘못함 수구바위")
             }
@@ -138,11 +138,23 @@ extension MainWebView.Coordinator: NaverThirdPartyLoginConnectionDelegate {
     // NaverThirdPartyLoginConnectionDelegate 메서드 구현
     func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
         // 인증 코드로 액세스 토큰을 요청한 후 처리 (첫 id, paswword 입력 로그인)
-        print("Successfully received access token with auth code")
+        let optionalAccessToken = NaverThirdPartyLoginConnection.getSharedInstance().accessToken
+        if let accessToken = optionalAccessToken {
+            print("Successfully received access token with auth code",accessToken)
+            let jsonData = try? JSONSerialization.data(withJSONObject: ["accessToken", accessToken], options: [])
+            // webview로 전달
+            webView?.evaluateJavaScript("window.initContent('\(String(data: jsonData!, encoding: .utf8))')")
+        }
     }
     func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
         // 리프레시 토큰으로 액세스 토큰을 요청한 후 처리
-        print("Successfully refreshed access token")
+        let optionalAccessToken = NaverThirdPartyLoginConnection.getSharedInstance().accessToken
+        if let accessToken = optionalAccessToken {
+            print("Successfully refreshed access token",accessToken)
+            let jsonData = try? JSONSerialization.data(withJSONObject: ["accessToken", accessToken], options: [])
+            // webview로 전달
+            webView?.evaluateJavaScript("window.initContent('\(String(data: jsonData!, encoding: .utf8))')")
+        }
     }
     func oauth20ConnectionDidFinishDeleteToken() {
         // 토큰 삭제 완료 후 처리
