@@ -8,6 +8,7 @@ import KakaoSDKCommon
 import KakaoSDKAuth
 import KakaoSDKUser
 import GoogleSignIn
+import AuthenticationServices
 
 struct MainWebView: UIViewRepresentable {
     let url:URL
@@ -117,6 +118,8 @@ extension MainWebView.Coordinator: WKScriptMessageHandler {
                     switch verifiedData.action {
                     case "log":
                         print("log", verifiedData)
+                        
+                        // Login Logic
                     case "login":
                         if(verifiedData.type == "naver") {
                             // Naver Login UI Open
@@ -158,17 +161,26 @@ extension MainWebView.Coordinator: WKScriptMessageHandler {
                                     print("No sign-in result available")
                                     return
                                 }
-                                guard let idToken = result.user.idToken!.tokenString as? String else { return }
-                                responseToWebView(webView: self.webView, accessToken: idToken)
+                                responseToWebView(webView: self.webView, accessToken: result.user.idToken!.tokenString)
                             }
                         }
+                        else if (verifiedData.type == "apple"){
+                            let appleIDProvider = ASAuthorizationAppleIDProvider()
+                            let request = appleIDProvider.createRequest()
+                            request.requestedScopes = [.fullName, .email]
+                            let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+                            authorizationController.delegate = self
+                            authorizationController.presentationContextProvider = self
+                            authorizationController.performRequests()
+                        }
+                        
                     default:
                         print("data", verifiedData)
                         let code = "window.initContent('hello')"
                         webView?.evaluateJavaScript(code)}
                 }
             } else {
-                print("머 잘못함 수구바위")
+                print("error")
             }
         default:
             break
@@ -183,20 +195,16 @@ extension MainWebView.Coordinator: NaverThirdPartyLoginConnectionDelegate {
         // 인증 코드로 액세스 토큰을 요청한 후 처리 (첫 id, paswword 입력 로그인)
         let optionalAccessToken = NaverThirdPartyLoginConnection.getSharedInstance().accessToken
         if let accessToken = optionalAccessToken {
-            print("Successfully received access token with auth code",accessToken)
-            let jsonData = try? JSONSerialization.data(withJSONObject: ["accessToken", accessToken], options: [])
-            // webview로 전달
-            webView?.evaluateJavaScript("window.initContent('\(String(data: jsonData!, encoding: .utf8))')")
+            print("Successfully received access token with auth code")
+            responseToWebView(webView: self.webView, accessToken: accessToken)
         }
     }
     func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
         // 리프레시 토큰으로 액세스 토큰을 요청한 후 처리
         let optionalAccessToken = NaverThirdPartyLoginConnection.getSharedInstance().accessToken
         if let accessToken = optionalAccessToken {
-            print("Successfully refreshed access token",accessToken)
-            let jsonData = try? JSONSerialization.data(withJSONObject: ["accessToken", accessToken], options: [])
-            // webview로 전달
-            webView?.evaluateJavaScript("window.initContent('\(String(data: jsonData!, encoding: .utf8))')")
+            print("Successfully refreshed access token")
+            responseToWebView(webView: self.webView, accessToken: accessToken)
         }
     }
     func oauth20ConnectionDidFinishDeleteToken() {
@@ -209,9 +217,37 @@ extension MainWebView.Coordinator: NaverThirdPartyLoginConnectionDelegate {
     }
 }
 
-func responseToWebView(webView: WKWebView?,accessToken: String) {
-    print("Successfully received access token with auth code",accessToken)
-    let jsonData = try? JSONSerialization.data(withJSONObject: ["accessToken", accessToken], options: [])
-    // webview로 전달
-    webView?.evaluateJavaScript("window.initContent('\(String(data: jsonData!, encoding: .utf8))')")
+//
+extension MainWebView.Coordinator:ASAuthorizationControllerDelegate,ASAuthorizationControllerPresentationContextProviding {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            let userIdentifier = appleIDCredential.user
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+            
+            print("Apple ID Credential received: \(userIdentifier)")
+            if let tokenData = appleIDCredential.identityToken,
+               let tokenString = String(data: tokenData, encoding: .utf8) {
+                responseToWebView(webView: self.webView, accessToken: tokenString)
+            }
+        }
+    }
+    
+    // Apple 로그인 실패 시 처리
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("Apple ID Authorization failed: \(error.localizedDescription)")
+    }
+    
+    // Apple 로그인 프레젠테이션 컨텍스트 제공
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return UIApplication.shared.windows.first { $0.isKeyWindow } ?? UIWindow()
+    }
+}
+
+func responseToWebView(webView: WKWebView?, accessToken: String) {
+    print("send access token to webview", accessToken)
+    let jsonData = try? JSONSerialization.data(withJSONObject: ["accessToken": accessToken], options: [])
+    if let jsonData = jsonData, let string = String(data: jsonData, encoding: .utf8) {
+        webView?.evaluateJavaScript("window.initContent('\(string)')")
+    }
 }
